@@ -18,8 +18,17 @@ import models.OD.UsuarioOD;
  */
 public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
 
+	/**
+	 * 
+	 */
     public UsuarioMongoDB(){
     }
+    
+    /**
+     * se encarga de establecer la conexion con MongoDB y adicionalmente se encarga de 
+     * verificar que la coleccion donde vas a trabajar exista
+     * @return DBCollection
+     */
 
     public DBCollection conectarMongo(){
         Mongo m;
@@ -37,6 +46,11 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
         }
         
     }
+    
+    /**
+     * se encarga de insert el usuario en persistencia
+     * @param Usuario
+     */
     public void insertar(UsuarioOD Usuario) {
         
         
@@ -66,7 +80,9 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
         }
     }
 
-    
+    /**
+     * se encarga de eliminar a los usuario de persistencia se hace usando un cursor buscando el usuario una vez encontrado lo elimina
+     */
     
     public void eliminar(UsuarioOD Usuario) {
         
@@ -81,6 +97,10 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
         } 
     }
     
+    /**
+     * se encarga de transformar el objeto que nos devuelve mongo DBobject en un objeto manejable para nuestra aplicacion
+     * @return UsuarioOD
+     */
     
      public UsuarioOD construir(DBObject obj){
         UsuarioOD usuario = new UsuarioOD();
@@ -98,10 +118,16 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
         usuario.setSexo(obj.get("sexo").toString());
         usuario.setClave(obj.get("clave").toString());
         
-    return usuario;
+        
+        return usuario;
     }
      
-     
+    
+
+     /**
+      * se encarga de transformar el objeto que nos devuelve mongo DBobject en un objeto manejable para nuestra aplicacion
+      * @return UsuarioOD
+      */
      public UsuarioOD construirToken(DBObject obj){
          UsuarioOD usuario = new UsuarioOD();
          usuario.setObjectid(obj.get("_id").toString());
@@ -117,38 +143,47 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
          usuario.setBiografia(obj.get("biografia").toString());
          usuario.setSexo(obj.get("sexo").toString());
          usuario.setClave(obj.get("clave").toString());
+         System.out.println("AKI IMPRIMIRE EL TOKEN: "+Integer.parseInt(obj.get("token").toString()));
          usuario.setToken((Integer.parseInt(obj.get("token").toString())));
          
      return usuario;
      }
      
     
-    public UsuarioOD buscar(UsuarioOD Usuario){
-    	
-    	
+     /**
+      *  se encarga de buscar un usuario por nick de usuario
+      *  @return UsuarioOD
+      */
+    public UsuarioOD buscar(UsuarioOD Usuario)
+    {
     	DBObject obj = null ;
         UsuarioOD beta = null;
         DBCollection coleccionUsuario = conectarMongo();
         BasicDBObject query = new BasicDBObject();
         query.put("nick",Usuario.getNick());
-        DBCursor cur = coleccionUsuario.find(query);
-           
-        
-        if(cur.count() != 0){
-        
-        while(cur.hasNext()){
-            
-        	obj = cur.next();
-        	beta = construir(obj);
-        	return beta;
+        DBCursor cur = coleccionUsuario.find(query);       
+        if(cur.count() != 0)
+        {
+        	while(cur.hasNext())
+        	{
+               	obj = cur.next();
+               	beta = construir(obj);
+               	return beta;
             }  		
      
-        return null;
-        }else{return null;}
+        	return null;
+        }
+        else
+        {
+        	return null;
+        }
     }
     
     
-    
+    /**
+     * se encarga de listar todos los usuario que se encuentren en persistencia
+     * @return List<UsuarioOD> lista de usuarios
+     */
     public List<UsuarioOD> listar() {
         
         List<UsuarioOD> lista = new ArrayList<UsuarioOD>();
@@ -157,8 +192,9 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
         DBCollection coleccionUsuario = conectarMongo();
         DBCursor cur = coleccionUsuario.find();
        
-        while(cur.hasNext()) {
-            //System.out.println(cur.next());
+        while(cur.hasNext()) 
+        {
+            System.out.println("LLENANDO LISTA BRO");
             obj = cur.next();
             beta = construir(obj);
             lista.add(beta);
@@ -168,79 +204,100 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
     }
 
     
-    
-        public int crearId(){
+    /**
+     * se encarga de generar un id para los usuario a insertar para su mejor manejo ya que los id que genera mongo son un poco mas tediosos
+     * @return id 
+     */
+        public int crearId()
+        {
             DBObject obj = null;
             DBCollection coleccionUsuario = conectarMongo();
             DBCursor cur = coleccionUsuario.find();
             int mayor = 0;
-        while(cur.hasNext()) {
-            //System.out.println(cur.next());
-            obj = cur.next();
-            if(Integer.parseInt(obj.get("id_u").toString())>mayor){
-            mayor = Integer.parseInt(obj.get("id_u").toString());
+        
+            while(cur.hasNext()) 
+            {
+            	//System.out.println(cur.next());
+            	obj = cur.next();
+            	if(Integer.parseInt(obj.get("id_u").toString())>mayor)
+            	{
+            		mayor = Integer.parseInt(obj.get("id_u").toString());
+            	}
             }
-        }
-        //System.out.println(obj.get("nombre"));
-          
-          if(obj!=null){
-              return  mayor + 1;
-          }else{return 1;}
+            //System.out.println(obj.get("nombre"));
+            if(obj!=null)
+            {
+            	return  mayor + 1;
+            }
+            else
+            {
+            	return 1;
+            }
         
         }
 
 
-    	
-	    public void insertarModificar(UsuarioOD Usuario) {
-        
-        
-        DBCollection coleccionUsuario = conectarMongo();
-        
-        if(coleccionUsuario!=null){
+    	/**
+    	 * se encarga de modificar la informacion del usuario
+    	 */
+	    public void insertarModificar(UsuarioOD Usuario) 
+	    {
+	    	DBCollection coleccionUsuario = conectarMongo();
+	    	if(coleccionUsuario!=null)
+	    	{
+	    		BasicDBObject usuario = new BasicDBObject();
+	    		usuario.put("id_u",Usuario.getId_u());
+	    		usuario.put("nombre", Usuario.getNombre());
+	    		usuario.put("nombres", Usuario.getNombres());
+	    		usuario.put("apellido", Usuario.getApellido());
+	    		usuario.put("apellidos", Usuario.getApellidos());
+	    		usuario.put("email", Usuario.getEmail());
+	    		usuario.put("fecha", Usuario.getFecha());
+	    		usuario.put("nick", Usuario.getNick());
+	    		usuario.put("pais", Usuario.getPais());
+	    		usuario.put("biografia", Usuario.getBiografia());
+	    		usuario.put("sexo", Usuario.getSexo());
+	    		usuario.put("clave", Usuario.getClave());
+	    		coleccionUsuario.insert(usuario);
             
-            BasicDBObject usuario = new BasicDBObject();
-            usuario.put("id_u",Usuario.getId_u());
-            usuario.put("nombre", Usuario.getNombre());
-            usuario.put("nombres", Usuario.getNombres());
-            usuario.put("apellido", Usuario.getApellido());
-            usuario.put("apellidos", Usuario.getApellidos());
-            usuario.put("email", Usuario.getEmail());
-            usuario.put("fecha", Usuario.getFecha());
-            usuario.put("nick", Usuario.getNick());
-            usuario.put("pais", Usuario.getPais());
-            usuario.put("biografia", Usuario.getBiografia());
-            usuario.put("sexo", Usuario.getSexo());
-            usuario.put("clave", Usuario.getClave());
-            coleccionUsuario.insert(usuario);
-            
-        }
-        else
-        {
-            System.out.println("coleccion no existente");
-        }
-    }
-	
-	public void eliminarModificar(UsuarioOD Usuario) {
-        
+	    	}
+	    	else
+	    	{
+	    		System.out.println("coleccion no existente");
+	    	}
+	    }
+	/**
+	 * se encarga de eliminar el usuario que queremos modificar
+	 */
+	public void eliminarModificar(UsuarioOD Usuario) 
+	{
         DBCollection coleccionUsuario = conectarMongo();
-        
         BasicDBObject query = new BasicDBObject();
         query.put("id_u", Usuario.getId_u());
-        DBCursor cur = coleccionUsuario.find(query);
-        
-        while(cur.hasNext()) {
-            coleccionUsuario.remove(cur.next());
-           
+        DBCursor cur = coleccionUsuario.find(query);        
+        while(cur.hasNext()) 
+        {
+            coleccionUsuario.remove(cur.next());  
         } 
     }
     
-    public void modificar(UsuarioOD Nuevo) {
-            UsuarioMongoDB beta = new UsuarioMongoDB();
-            beta.eliminarModificar(Nuevo);
-            beta.insertarModificar(Nuevo);
+	/**
+	 * se encarga de insertar el usuario modificado en persistencia ya que el update de la libreria de mongo no nos funciono eliminamos el usuaruo ya insertado e insertamos el nuevo con su mismi 
+	 * id generado por nosotros
+	 */
+    public void modificar(UsuarioOD Nuevo) 
+    {
+    	UsuarioMongoDB beta = new UsuarioMongoDB();
+        beta.eliminarModificar(Nuevo);
+        beta.insertarModificar(Nuevo);
     }
 
-public UsuarioOD buscarID(UsuarioOD Usuario){
+    
+    /**
+     * se encarga de buscar los usuario por el ID
+     * @return UsuarioOD
+     */
+    public UsuarioOD buscarID(UsuarioOD Usuario){
     	
     	
     	DBObject obj = null ;

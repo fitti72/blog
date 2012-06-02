@@ -20,7 +20,13 @@ import models.OD.UsuarioOD;
  * @author SCOTT
  */
 public class GustaMongoDB implements models.DAO.GustaDAO {
-    
+	
+	/**
+     * se encarga de establecer la conexion con MongoDB y adicionalmente se encarga de 
+     * verificar que la coleccion donde vas a trabajar exista gusta
+     * @return DBCollection
+     */
+
     public DBCollection conectarMongo(){
         Mongo m;
         try {
@@ -38,7 +44,9 @@ public class GustaMongoDB implements models.DAO.GustaDAO {
     }
         
         
-        
+        /**
+         * se encarga de insertar el persistencia la peticion de gusta o no gusta con respecto a un comentario
+         */
      public void insertar(GustaOD Gusta){
      
         DBCollection coleccionGusta = conectarMongo();
@@ -59,7 +67,12 @@ public class GustaMongoDB implements models.DAO.GustaDAO {
         
         
      }
-        public boolean permisodDeRepeticion(GustaOD Gusta){
+     
+     /**
+      * se encarga de validar si el usuario ya realizo alguna peticion con respecto al comentario a realizar la accion
+      *@return boolean
+      */
+     public boolean permisodDeRepeticion(GustaOD Gusta){
      
         DBObject obj = null;
         DBCollection coleccionGusta = conectarMongo();
@@ -78,7 +91,11 @@ public class GustaMongoDB implements models.DAO.GustaDAO {
         }else{return false;}
     }
         
-        
+        /**
+         * se encarga de construir un objeto GustaOD para poder trabajar en la aplicacion ya que mongo devuelve un onjeto tipo DBobject
+         * @param obj
+         * @return GustaOD
+         */
      
         public GustaOD construir(DBObject obj){
             GustaOD gusta = new GustaOD();
@@ -93,7 +110,9 @@ public class GustaMongoDB implements models.DAO.GustaDAO {
         
         
         
-        
+        /**
+         * se encarga de buscar si el usuario ya realizo una peticion sobre el comentario seleccionado
+         */
         public GustaOD buscar(GustaOD Gusta){
         	
         	

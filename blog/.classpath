@@ -93,5 +93,6 @@
 	<classpathentry kind="lib" path="lib/xstream-1.4.2.jar"/>
 	<classpathentry kind="lib" path="lib/javamail-1.4.5/mail.jar"/>
 	<classpathentry kind="lib" path="lib/javaee-api-5.jar"/>
+	<classpathentry kind="lib" path="lib/commons-fileupload-1.2.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

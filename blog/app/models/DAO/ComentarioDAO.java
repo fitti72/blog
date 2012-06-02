@@ -22,6 +22,6 @@ public interface ComentarioDAO {
     public List<ComentarioOD> listar();
     public List<ComentarioOD> listarHijos(ComentarioOD Comentario);
     public List<ComentarioOD> listarPorUsuario(ComentarioOD Comentario);
-    public List<ComentarioOD> listarPortag(int id_t);
     public int Buscarid();
+    public void insertarModificar(ComentarioOD Comentario);
 }

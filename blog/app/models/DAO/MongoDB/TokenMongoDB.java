@@ -15,153 +15,198 @@ import models.OD.TokenOD;
 import models.OD.UsuarioOD;
 
 /**
- *
+ * 
  * @author SCOTT
  */
 public class TokenMongoDB implements models.DAO.TokenDAO {
-    
-    
-      public TokenMongoDB(){
-    }
 
-    public DBCollection conectarMongo(){
-        Mongo m;
-        try {
-            m = new Mongo();
-            DB db = m.getDB( "blog" );
-            DBCollection coleccionUsuario = db.getCollection("token");
-        return coleccionUsuario;
-        } catch (UnknownHostException ex) {
-            Logger.getLogger(UsuarioMongoDB.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        } catch (MongoException ex) {
-            Logger.getLogger(UsuarioMongoDB.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-        
-    }
-    
-    
-    public void insertar(TokenOD Token) {
-        
-        
-        DBCollection coleccionToken = conectarMongo();
-          if(coleccionToken!=null){
-            
-            BasicDBObject token = new BasicDBObject();
-            token.put("id_u",Token.getId_u());
-            token.put("fecha", Token.getFecha());
-            token.put("token", Token.getToken());
-            token.put("ip", Token.getIp());
-            coleccionToken.insert(token);
-            
-        }
-        else
-        {
-            System.out.println("coleccion no existente");
-        }
-    }
-    
-    public void eliminar(TokenOD Token) {
-        
-        DBCollection coleccionToken = conectarMongo();
-        
-        BasicDBObject query = new BasicDBObject();
-        query.put("token", Token.getToken());
-        DBCursor cur = coleccionToken.find(query);
-        
-        while(cur.hasNext()) {
-            coleccionToken.remove(cur.next());
-            //System.out.println(cur.next());
-        } 
-    }
-    
-    public TokenOD buscar(TokenOD Token){
-        
-        TokenOD beta = null;
-        DBObject obj = null;
-        DBCollection coleccionUsuario = conectarMongo();
-        BasicDBObject query = new BasicDBObject();
-        query.put("token",Token.getToken());
-        DBCursor cur = coleccionUsuario.find(query);
-      
-        if(cur.count() != 0){
-        
-        while(cur.hasNext()) {
-        	
-            obj = cur.next();
- 
-            
-        }
-        beta = construir(obj);
-      //  System.out.println(beta.getFecha());
-           
-        return beta;
-        }else{return null;}
-    }
-    
- 
-    
-    public TokenOD buscarPorUsuario(UsuarioOD Usuario){
-        
-        TokenOD beta = null;
-        DBObject obj = null;
-        DBCollection coleccionUsuario = conectarMongo();
-        BasicDBObject query = new BasicDBObject();
-        query.put("id_u",Usuario.getId_u());
-        DBCursor cur = coleccionUsuario.find(query);
-      
-        if(cur.count() != 0){
-        
-        while(cur.hasNext()) {
-        	
-            obj = cur.next();
- 
-            
-        }
-        beta = construir(obj);
-      //  System.out.println(beta.getFecha());
-           
-        return beta;
-        }else{return null;}
-    }
- 
-     public TokenOD construir(DBObject obj){
-        TokenOD token = new TokenOD();
-        token.setId(obj.get("_id").toString());
-        token.setId_u((Integer.parseInt(obj.get("id_u").toString())));
-        token.setFecha(obj.get("fecha").toString());
-        token.setIp(obj.get("ip").toString());
-        token.setToken((Integer.parseInt(obj.get("token").toString())));
-        
-    return token;
-    }
-    
-    	    
-    	    
-     public TokenOD buscarIP(TokenOD Token){
-         
-         TokenOD beta = null;
-         DBObject obj = null;
-         DBCollection coleccionUsuario = conectarMongo();
-         BasicDBObject query = new BasicDBObject();
-         query.put("ip",Token.getIp());
-         DBCursor cur = coleccionUsuario.find(query);
-       
-         if(cur.count() != 0){
-         
-         while(cur.hasNext()) {
-         	
-             obj = cur.next();
-  
-             
-         }
-         beta = construir(obj);
-       //  System.out.println(beta.getFecha());
-            
-         return beta;
-         }else{return null;}
-     }  
-    	
+	/**
+     * 
+     */
+	public TokenMongoDB() {
+	}
+
+	/**
+	 * se encarga de establecer la conexion con MongoDB y adicionalmente se
+	 * encarga de verificar que la coleccion donde vas a trabajar exista token
+	 * 
+	 * @return DBCollection
+	 */
+
+	public DBCollection conectarMongo() {
+		Mongo m;
+		try {
+			m = new Mongo();
+			DB db = m.getDB("blog");
+			DBCollection coleccionUsuario = db.getCollection("token");
+			return coleccionUsuario;
+		} catch (UnknownHostException ex) {
+			Logger.getLogger(UsuarioMongoDB.class.getName()).log(Level.SEVERE,
+					null, ex);
+			return null;
+		} catch (MongoException ex) {
+			Logger.getLogger(UsuarioMongoDB.class.getName()).log(Level.SEVERE,
+					null, ex);
+			return null;
+		}
+
+	}
+
+	/**
+	 * se encargar de insertar en persistencia el token
+	 * 
+	 * @param Token
+	 *            objeto TokenOD
+	 */
+
+	public void insertar(TokenOD Token) {
+
+		DBCollection coleccionToken = conectarMongo();
+		if (coleccionToken != null) {
+
+			BasicDBObject token = new BasicDBObject();
+			token.put("id_u", Token.getId_u());
+			token.put("fecha", Token.getFecha());
+			token.put("token", Token.getToken());
+			token.put("ip", Token.getIp());
+			coleccionToken.insert(token);
+
+		} else {
+			System.out.println("coleccion no existente");
+		}
+	}
+
+	/**
+	 * se encarga de elimianr el token de persistenca
+	 * 
+	 * @param Token
+	 *            objeto tipo TokenOD
+	 */
+
+	public void eliminar(TokenOD Token) {
+
+		DBCollection coleccionToken = conectarMongo();
+
+		BasicDBObject query = new BasicDBObject();
+		query.put("token", Token.getToken());
+		DBCursor cur = coleccionToken.find(query);
+
+		while (cur.hasNext()) {
+			coleccionToken.remove(cur.next());
+			// System.out.println(cur.next());
+		}
+	}
+
+	/**
+	 * se encarga de buscar token en persistencia
+	 * 
+	 * @param Token
+	 *            objeto tipo TokenOD
+	 * @return TokenOD
+	 */
+	public TokenOD buscar(TokenOD Token) {
+
+		TokenOD beta = null;
+		DBObject obj = null;
+		DBCollection coleccionUsuario = conectarMongo();
+		BasicDBObject query = new BasicDBObject();
+		query.put("token", Token.getToken());
+		DBCursor cur = coleccionUsuario.find(query);
+
+		if (cur.count() != 0) {
+
+			while (cur.hasNext()) {
+
+				obj = cur.next();
+
+			}
+			beta = construir(obj);
+			// System.out.println(beta.getFecha());
+
+			return beta;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * se encarga de buscar el ultimo token que tiene el usuario
+	 * 
+	 * @param Usuario
+	 *            objeto tipo UsuarioOD
+	 * @return TokenOD
+	 */
+	public TokenOD buscarPorUsuario(UsuarioOD Usuario) {
+
+		TokenOD beta = null;
+		DBObject obj = null;
+		DBCollection coleccionUsuario = conectarMongo();
+		BasicDBObject query = new BasicDBObject();
+		query.put("id_u", Usuario.getId_u());
+		DBCursor cur = coleccionUsuario.find(query);
+
+		if (cur.count() != 0) {
+
+			while (cur.hasNext()) {
+
+				obj = cur.next();
+
+			}
+			beta = construir(obj);
+			// System.out.println(beta.getFecha());
+
+			return beta;
+		} else {
+			return null;
+		}
+	}
+
+	/**
+	 * se encarga de construir un token del formato de mongo a un objeto tipo
+	 * TokenOD
+	 * 
+	 * @param obj
+	 * @return TokenOD
+	 */
+	public TokenOD construir(DBObject obj) {
+		TokenOD token = new TokenOD();
+		token.setId(obj.get("_id").toString());
+		token.setId_u((Integer.parseInt(obj.get("id_u").toString())));
+		token.setFecha(obj.get("fecha").toString());
+		token.setIp(obj.get("ip").toString());
+		token.setToken((Integer.parseInt(obj.get("token").toString())));
+
+		return token;
+	}
+
+	/**
+	 * se encarga de buscar token por IP
+	 * 
+	 * @return TokenOD
+	 */
+	public TokenOD buscarIP(TokenOD Token) {
+
+		TokenOD beta = null;
+		DBObject obj = null;
+		DBCollection coleccionUsuario = conectarMongo();
+		BasicDBObject query = new BasicDBObject();
+		query.put("ip", Token.getIp());
+		DBCursor cur = coleccionUsuario.find(query);
+
+		if (cur.count() != 0) {
+
+			while (cur.hasNext()) {
+
+				obj = cur.next();
+
+			}
+			beta = construir(obj);
+			// System.out.println(beta.getFecha());
+
+			return beta;
+		} else {
+			return null;
+		}
+	}
 
 }

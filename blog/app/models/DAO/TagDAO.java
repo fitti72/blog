@@ -4,6 +4,8 @@
  */
 package models.DAO;
 
+import java.util.List;
+
 import models.OD.TagOD;
 
 /**
@@ -13,5 +15,7 @@ import models.OD.TagOD;
 public interface TagDAO {
     public void insertar(TagOD Tag);
     public TagOD buscar(TagOD Tag);
+    public TagOD buscarPorId(TagOD Tag);
+    public List<TagOD> listar();
     
 }
