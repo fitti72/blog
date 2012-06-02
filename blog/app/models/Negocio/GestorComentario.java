@@ -678,7 +678,7 @@ public class GestorComentario
 		}
 		else 
 		{
-			Logger.error("GestorUsuario: No se puedo modificar el usuario, token vencido o no valido");
+			Logger.error("GestorUsuario: No se puede modificar el usuario, token vencido o no valido");
 			return false;
 		}		
 	}
