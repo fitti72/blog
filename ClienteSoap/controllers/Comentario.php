@@ -39,13 +39,13 @@ class Comentario {
     }
     
     function XMLtoListaDeComentarios($result) {
-$comentario=null;
+
         $xml = simplexml_load_string($result);
 
         if ($xml === false) {
             die('Error parsing XML');
         }
-     
+        print_r($xml);
         $i = 0;
         foreach ($xml->xpath('//id__c') as $asunto) {
             $comentario[$i]['id_c'] = $asunto;

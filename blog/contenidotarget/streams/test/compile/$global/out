@@ -1,0 +1,4 @@
+[info] Compiling 1 Java source to C:\play\blog\target\scala-2.9.1\test-classes...
+[warn] warning: C:\play\blog\target\scala-2.9.1\classes\models\DAO\UsuarioDAO.class: major version 51 is newer than 50, the highest major version supported by this compiler.
+[warn] It is recommended that the compiler be upgraded.
+[warn] 1 warning

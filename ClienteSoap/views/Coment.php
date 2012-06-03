@@ -96,7 +96,7 @@ $Usuario2 = new Usuario();
                                     <li>
                                         <label for="Bhiografi">*Replay</label>
                                         <input class="itextarea" type="text" name="Bhiografi" id="Bhiografi" /></li>
-<input name="mensaje2" type="hidden" id="mensaje2" value="<?php echo $id_c; ?>" />
+
                                     <li><label>&nbsp;</label><input type="submit" class="ibutton" onclick="sendForm()" name="Register" id="Register" value="Register!" /></li>
 
 

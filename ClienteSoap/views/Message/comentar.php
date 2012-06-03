@@ -3,7 +3,8 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
         <title>Blog | Desarrollo del SoftWare</title>
-        
+        <link href="../public/css/styles.css" rel="stylesheet" type="text/css" media="all" />
+
         <link href="../../public/css/faary.css" rel="stylesheet" type="text/css" media="all" />
         <link href="../../public/css/styles.css" rel="stylesheet" type="text/css" media="all" />
 
@@ -97,13 +98,13 @@
             if (strstr($sol, "Error:")) {
                 ?><script> 
                             window.alert("<?php echo $sol; ?>")
-                            location = "../timeline.php";  
+                            location = "../../index.php";  
                 </script>     <?php
     } else {
 
    ?><script> 
                             window.alert("Send :) ")
-                            location = "../timeline.php";  
+                            location = "../../index.php";  
                 </script>     <?php
     }
 }
