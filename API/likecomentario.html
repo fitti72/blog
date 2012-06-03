@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>API</title>
+ <link href="public/css/faary.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="public/css/styles.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body>
+
+
+
+
+ <div id="head">
+            <div id="head_cen">
+                <div id="head_sup" class="head_pad">
+                   
+
+                    <h1 class="logo"><a href="index.html">BLOG</a></h1>
+                </div>
+            </div>
+        </div>
+<div  id="content">
+
+<div><h1>POST comentario/like/:token</h1>
+</div>
+
+
+<div>
+<h2>Direccion URL</h2>
+<p >http://localhost:9000/blog/comentario/like/:token</p>
+<h2>Descripcion</h2>
+<p>Retorna el comentario en XML al cual se le ha hecho la peticion de like o dislike, se le pasa como parametro el token del usuario el cual realixa la peticion, en el XML se le pasa el id del comentario, el id del usuario y la peticon de like o dislike. </p>
+<h2>Parametro</h2>
+<p>Token del Usuario</p>
+
+
+<h2>Entradas XML</h2>
+<p>&lt;comentario&gt;<br />
+&lt;id_c&gt;2&lt;/id_c&gt;<br />
+&lt;id_u&gt;2&lt;/id_u&gt;<br />
+&lt;like&gt;1&lt;/like&gt;<br />
+&lt;/comentario&gt;</p>
+
+<h2>Salidas XML</h2>
+<p>&lt;mensaje&gt;Registrado tu punteado al comentario&lt;/mensaje&gt;</p>
+<p>&nbsp;</p>
+
+
+<h2>Errores</h2>
+<p>&lt;mensaje&gt;Error: Id del comentario vacio no esta permitido &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: Indique el id del usuario &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: Indique like=1 si le gusta, 0 si no le gusta &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: El id del comentario debe ser un numero &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: El id del usuario debe ser un numero &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: El like debe ser un numero &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: El like debe ser un numero de un solo digito &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: El like solo puede ser 0 o 1 &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error:Ese token no pertenece a ese usuario &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: no se puedo puntear el comentario&lt;/mensaje&gt;</p>
+</div>
+
+
+
+
+
+</div>
+
+
+
+
+</body>
+</html>

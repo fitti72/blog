@@ -24,7 +24,7 @@ POST /blog/usuario/insertar controllers.Usuario.insertar()
 DELETE	/blog/usuario/eliminar/:nick controllers.Usuario.eliminarUsuario(nick)
 
 #modificar Usuario
-PUT	/blog/usuario/modificar/:token 	controllers.Usuario.modificarUsuario(token)
+POST	/blog/usuario/modificar/:token 	controllers.Usuario.modificarUsuario(token)
  
 #validar Usuario
 POST /blog/usuario/validar controllers.Usuario.validarUsuario()

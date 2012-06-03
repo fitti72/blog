@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="file:///C|/Users/SCOTT/css/styles.css" rel="stylesheet" type="text/css" media="all" />
+<title>API de BLOG</title>
+
+ <link href="public/css/faary.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="public/css/styles.css" rel="stylesheet" type="text/css" media="all" />
+
+<style type="text/css">
+#content .iform table {
+	text-align: justify;
+}
+</style>
+
+
+
+</head>
+<body>
+
+
+ <div id="head">
+            <div id="head_cen">
+                <div id="head_sup" class="head_pad">
+                   
+
+                    <h1 class="logo"><a href="index.html">BLOG</a></h1>
+                </div>
+            </div>
+        </div>
+
+<div  id="content">
+<form method="post" action="" class="iform">
+  <h1 id="title">PROYECTO DESARROLLO REST API </h1>
+
+      <div class="content_resize">
+      <div class="mainbar">
+        <div class="article">
+<br></br>
+<h2>Usuario</h2>
+<table width="95%" rules="rows">
+     
+    <thead>
+    <tr>
+              <th width="27%" >Resource</th>
+             
+              <th width="73%">Description</th>
+          </tr>
+  </thead>
+  <tbody>
+         <tr >
+                  <td>
+            <a href="listarusuarios.html">GET usuario/list</a>          </td>
+                  <td >
+            Retorna una lista con todos los usario que es encuentren en esl sistema en formato xml.</td>
+              </tr>
+                 <tr>
+                <td >
+            <a href="datosncikusuario.html">GET usuario/datos/:id</a>          </td>
+                  <td class="views-field views-field-body">
+            Retorna el nick de un usuario especifico se le pasa como parametro el id del usuario en formato XML.     </td>
+       </tr>
+                    <tr>
+                <td >
+            <a href="obtenerfotousuario.html">GET usuario/obtenerFoto/:nick </a>          </td>
+                  <td class="views-field views-field-body">
+            Retorna la ruta de la foto del usuario que le pasas por parametro.</td>
+       </tr>
+          <tr>
+                  <td>
+            <a href="insertarusuarios.html">POST usuario/insertar</a>          </td>
+                  <td >
+           Se encarga de insertar el usuario en persistencia pasandole un xml y retornando el xml del usuario ya insertaod en persistencia con su id ya generad.  </td>
+              </tr>
+          <tr >
+       <td>
+            <a href="validarusuario.html">POST usuario/validar</a>          </td>
+                  <td>
+            Se encarga de validar que el nick y la clave del usuario sean validas pasandole un xml con el nick y la clave y devolviendo todo los datos del usuario con su token ya asignado.</td>
+              </tr>
+                   <tr>
+                         <td >
+            <a href="unicousuario.html">POST usuario/unico/:nick</a>          </td>
+                  <td >
+          Retorna toda la informacion del usuario pedio, al metodo se le pasa como parametro el nick del usuario para ver toda su informacion.</td>
+              </tr>
+          <tr >
+                  
+          <tr>
+                  <td >
+            <a href="modificarusuario.html">POST usuario/modificar/:token</a>          </td>
+                  <td class="views-field views-field-body">
+            Retorna el usuario con las nuevas modificaciones, al metodo se le pasa un xml con toda la informacion del usuarioy el token para complir con su peticion, para actualizarlo y se devuelve un xml del usuario con las modificaciones.          </td>
+       </tr>
+       
+              <tr>
+                  <td >
+            <a href="insertarfotousuario.html">POST usuario/foto/:token</a>          </td>
+                  <td class="views-field views-field-body">Se encarga de registrar su foto de perfil en el sistema, pasandole por parametro el token y el XML del id del usuario y el nombre de la foto.</td>
+       </tr>
+          
+          <tr >
+                  <td>
+            <a href="eliminarusuario.html">DELETE usuario/eliminar/:nick</a>          </td>
+                  <td>
+             Se encarga de eliminar el usuario del sistema y devuelve un mensaje si elimino el usuario o si no pudo eliminarlo se le pasa como paramtro el nick del usuario a eliminar.     </td>
+          
+              </tr>
+             
+      </tbody>
+</table>
+
+<br></br>
+  <h2>Comentario</h2>
+<table width="95%" rules="rows">
+   
+    <thead>
+    <tr>
+              <th width="27%">Resource</th>
+             
+              <th width="73%">Description</th>
+          </tr>
+  </thead>
+  <tbody>
+  
+     <td>
+            <a href="listarcomentarios.html">GET comentario/listart</a>          </td>
+                  <td >
+            Retorna una lista con todos los comentarios que es encuentren en esl sistema en formato xml.</td>
+              </tr>
+          <tr>
+                  <td>
+            <a href="listarcomentarioshijos.html">GET comentario/listar/:id</a>          </td>
+                  <td >
+           Retorna una lista con todos los comentarios hijos de un comentario en especificoen formato XML, se le pasa como parametro el id del comentario para buscar sus hijos  </td>
+              </tr>
+          <tr >
+       <td>
+            <a href="listarcomentariosporusuario.html">GET comentario/listaru/:nick</a>          </td>
+                  <td>
+           Retorna todos los comentarios realizados por un usuario en especifico que se le pasa por parametro en formato XML</td>
+              </tr>
+                   <tr>
+                         <td >
+            <a href="listarcomentariotags.html">GET comentario/listar/tag/:tag</a>          </td>
+                  <td >
+          Retorna todos los comentarios que esten asociados al tag que se le pasa por parametro en formato XML.</td>
+              </tr>
+          <tr >
+                  
+          <tr>
+                  <td >
+            <a href="listartagsdecomentario.html">GET comentario/tags/:id_c</a>          </td>
+                  <td class="views-field views-field-body">
+            Retorna una lista con todos los tags asociados al comentatio en formato XML se le pasa como parametro el id del comentario.          </td>
+       </tr>
+       <tr>
+                <td >
+            <a href="listartags.html">GET tags/listar</a>          </td>
+                  <td class="views-field views-field-body">
+            Retorna una lista con todos los tags que se encuentren en sistema en formato XML.     </td>
+       </tr>
+       
+        <tr>
+                <td >
+            <a href="obteneradjuntocomentario.html">GET comentario/obtenerAdjunto/:id_c</a>          </td>
+                  <td class="views-field views-field-body">Se encarga de obtener el adjunto el comentario que se le pasa como parametro.</td>
+       </tr>
+       
+          <tr >
+                    <td>
+            <a href="insertarcomentario.html">POST comentario/insertar/:token</a>          </td>
+                  <td>
+            Retorna el comentario ya insertado en persistencia con su id, en formato XML, se pasa como parametro el token del usuario que esta haciendo el comentario y un XML con el texto del comentario, la privacidad del comentario, el id del usuario creador el comentario, el padre, es decir, si esta respondiendo a un comentario ya realizado antes o un nuevo comentario y se le puede pasar de una vez los tags al comentario si es padre si no, no se le pasa tags.  </td>
+          
+              </tr>
+                 <tr >
+                    <td>
+            <a href="likecomentario.html">POST comentario/like/:token</a>          </td>
+                  <td>
+            Retorna el comentario en XML al cual se le ha hecho la peticion de like o dislike, se le pasa como parametro el token del usuario el cual realixa la peticion, en el XML se le pasa el id del comentario, el id del usuario y la peticon de like o dislike.  </td>
+              </tr>
+              <tr>
+              <td><a href="insertaradjuntocomentario.html">POST comentario/insertarAdjunto/:token</a></td>	
+              <td>Se encarga de insertar el adjunto del comentario en persistencia pasandole como parametro el token del usuario y por XML el mismo XML de el insertar comentario pero agregandole la etiqueta de la ruta.
+              </td>
+              </tr>
+                         <tr >
+                    <td>
+            <a href="eliminarcomentario.html">DELETE comentario/eliminar/:nick/:id_c/:token</a>          </td>
+                  <td>
+            Retorna un mensaje diciendo que se elimino el mensaje, ha este metodo se le pasa como parametro el nick del usuario, el id del comentario, y el token del usuario. este metodo elimina los comentarios que sean del usuario o si el usuario es dueno del comentario padre puede eliminar cualquier hijo a ese comentario.  </td>
+          
+              </tr>
+      </tbody>
+</table>
+</form>
+</div>
+
+
+
+<footer>
+
+
+
+</footer>
+</body>
+</html>

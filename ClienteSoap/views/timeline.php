@@ -10,16 +10,25 @@
 
 
         <?php
+        session_start();
+        $nick = $_SESSION['nick'];
+        $token = $_SESSION['token'];
+        $id_u = $_SESSION['id_u'];
+        
+        
         require_once('../controllers/Usuario.php');
         require_once('../controllers/Comentario.php');
-        $Comentario = new Comentario();
-        echo $_POST['nick'];
+        
         $Usuario = new Usuario();
-        $UsuarioEsp = $Usuario->BuscarUsuarioEspe('scott746');
+        $Comentario = new Comentario();
+        $UsuarioEsp = $Usuario->BuscarUsuarioEspe($nick);
         $result = $Comentario->ListarComentario();
-        $resultUsu = $Usuario->ListarUsuarios();
         $resultTags = $Comentario->ListarTag();
-        ?>
+        $resultUsu = $Usuario->ListarUsuarios();
+        
+        
+        
+     ?>
 
     </head>
 
@@ -46,18 +55,48 @@
         <div id="content">
             <div id="content_cen">
                 <div id="content_sup" class="head_pad">
-                    <h2><span>PEDRO SCOTT</span>SCOTT746</h2>
+                    <h2><span><?php echo $UsuarioEsp['nombre'] . " " . $UsuarioEsp['apellido']; ?></span><?php echo $UsuarioEsp['nick']; ?></h2>
                     <div id="welcom_pan">
                         <h2>TimeLine</h2>
                         <div id="service_pan">
+                            <form class="iform"method="post" action="Message/comentar.php" id="formlogin" name="formlogin" enctype="multipart/form-data" >
+
+                                <li><label for="Texto">*Text</label><input class="itextarea" type="text" name="texto" id="texto" /></li>
+                                <li><label for="FirstName">*Tags</label><input class="itext" type="text" name="tags" id="tags" /></li>
+
+
+                                <li><label for="direccionFoto">Photo</label>       <input type="file" name="direccionFoto" id="direccionFoto" />
+                                    <span class="text">
+                                        <input name="action" type="hidden" value="upload" />
+                                    </span></li>
+                                <li> <select class="iselect" name="priva" id="priva">
+                                        <option selected="true" value="1">Publico</option>
+                                        <option value="0">Privado</option>
+                                    </select></li>
+
+                                <li><label>&nbsp;</label><input type="submit" class="ibutton" onclick="sendForm()" name="Register" id="Register" value="Register!" /></li>
+
+                            </form>
+
                             <ul>
-                                <?php $result = array_reverse($result); foreach ($result as $value) { ?>  
-                                    <form action="Coment.php">
-                                        <li><img src="../public/images/ps.jpg" width="93" height="82"/>
-                                            <input type="hidden" name="id_c" id="id_c" value="<?php echo $value['id_c']; ?>" /><br />
-                                            <h5 id="nick"><?php echo $value['id_u']; ?></h5>
-                                            <p><?php echo $value['texto']; ?><a href="#">Like <?php echo $value['gusta'] ?></a><a href="#" >Dis-Like <?php echo $value['nogusta'] ?></a> </p><br />
-                                            <input type="submit" class="btn" id="but-replay" value="replay" />
+                                <?php
+                                $result = array_reverse($result);
+                                foreach ($result as $value) {
+                                    $result2 = $Usuario->obtenerNick($value['id_u']);
+				$nick = $result2['id_u'];
+				 $result2 = $Usuario->obtenerFoto($nick);	
+				 $rutaFoto = $result2['id_u'];
+                                 echo $rutaFoto;
+				 ?>
+                                <form class="log-in"method="post" action="Coment.php" id="hola" name="hola" >
+                                        <li><img src="../images/<?php echo $rutaFoto; ?>" width="93" height="82"/><input type="hidden" name="id_c" id="id_c" value="<?php echo $value['id_c']; ?>" /><br />
+                                             <input type="hidden" name="id_c" id="id_c" value="<?php echo $value['id_c']; ?>" /><br />
+                                            <h5 id="nick"><a href="Profile.php?&nick=<?php echo $UsuarioEsp['nick']; ?>&token=<?php echo $UsuarioEsp['token']; ?>" ><?php
+                                $usulista = $Usuario->nickdelid($value['id_u']);
+                                echo $usulista;
+                                ?></a></h5><input type="hidden" value="<?php echo $value['id_c'];?>">
+                                            <p><?php echo $value['texto']; ?><a href="Message/like.php?&id_c=<?php echo $value['id_c']; ?>&like=1">Like <?php echo $value['gusta'] ?></a><a href="Message/like.php?&id_c=<?php echo $value['id_c']; ?>&like=0">Dis-Like <?php echo $value['nogusta'] ?></a> </p><br />
+                                            <input type="submit" class="btn" id="butreplay" value="Look" />
                                         </li>
                                     </form>
                                 <?php } ?>
@@ -67,7 +106,7 @@
                         <div id="user">
                             <ul>
                                 <li><img src="../public/images/ps.jpg" width="93" height="82"/>
-                                    <h4><a href="Profile.html"><?php echo $UsuarioEsp['nick']; ?></a></h4>
+                                    <h4><a href="href="Profile.php?&nick=<?php echo $UsuarioEsp['nick']; ?>&token=<?php echo $UsuarioEsp['token']; ?>" <?php echo $UsuarioEsp['nick']; ?></a></h4>
 
                                 </li>      
                             </ul>
@@ -76,11 +115,17 @@
 
                         <div id="user">
                             <ul>
-                                <?php $i=0; foreach ($resultUsu as $value) { 
-                                     if($i<=5){
-                                    ?> 
-                                    <li><h5><?php echo $value['nick']; ?> </h5><br /> <p><?php echo $value['pais']; ?></p></li>     
-                                <?php $i++;} } ?>
+                                <?php
+                                $i = 0;
+                                foreach ($resultUsu as $value) {
+                                    if ($i <= 5) {
+                                        ?> 
+                                        <li><h5><a href="Profile.php?&nick=<?php echo $UsuarioEsp['nick']; ?>&token=<?php echo $UsuarioEsp['token']; ?>" /><?php echo $value['nick']; ?> </h5><br /> <p><?php echo $value['pais']; ?></p></li>     
+                                        <?php
+                                        $i++;
+                                    }
+                                }
+                                ?>
                             </ul>
                         </div>
 
@@ -88,11 +133,13 @@
                         <div id="user">
                             <ul>
                                 <h2>Tags</h2>
+
                                 <?php foreach ($resultTags as $tags) { ?> 
-
-                                <li><h5><a href="#" /><?php echo $tags['nombre'];?></a></h5></li>
-
+                                    <li><h5><a href="ComentTags.php?tag=<?php echo $tags['nombre']; ?>&nick=<?php echo $UsuarioEsp['nick']; ?>&token=<?php echo $UsuarioEsp['token']; ?>" /><?php echo $tags['nombre']; ?></a></h5></li>
+                                    <li><input id="tag" type="hidden" value="<?php echo $tags['nombre']; ?>" name="tag" /></a></h5></li>
                                 <?php } ?>
+
+
                             </ul>
                         </div>
 

@@ -564,8 +564,12 @@ public class Usuario  extends Controller
 		  UsuarioOD buscado = new UsuarioOD();
 		  buscado.setId_u(Integer.parseInt(id));
 		  UsuarioOD respuesta = alfa.Buscar(buscado);
-		  return ok("<nick>"+respuesta.getNick()+"</nick>");
-	  }
+		  if (respuesta !=null)
+		  return ok("<mensaje>"+respuesta.getNick()+"</mensaje>");
+		  else
+		  return ok("<mensaje>Error: Usuario no existente</mensaje>");
+		  }
+	  
 	  
 	  @BodyParser.Of(BodyParser.Xml.class)
 	  public static Result nuevaInsercionFoto(String token)

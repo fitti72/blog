@@ -27,11 +27,96 @@ class Usuario {
      * Entrada: String 
      * Salida: Array[] 
      */
-
-    function XMLtoUsuario($result) {
-
+    
+    
+    
+    
+    
+    function XMLtoUsuarioToken($result) {
+        //echo $result;
         $xml = simplexml_load_string($result);
 
+        if ($xml === false) {
+            die('Error parsing XML');
+        }
+        
+        
+        foreach ($xml->xpath('//id__u') as $asunto) {
+            $usuario['id_u'] = $asunto;
+        }
+
+        foreach ($xml->xpath('//objectid') as $asunto) {
+            $usuario['objectid'] = $asunto;
+        }
+        foreach ($xml->xpath('//nombre') as $asunto) {
+            //  echo $asunto."\n";
+            $usuario['nombre'] = $asunto;
+        }
+
+        foreach ($xml->xpath('//nombres') as $asunto) {
+            //  echo $asunto."\n";
+            $usuario['nombres'] = $asunto;
+        }
+
+        foreach ($xml->xpath('//apellido') as $asunto) {
+            // echo $asunto."\n";
+            $usuario['apellido'] = $asunto;
+        }
+
+        foreach ($xml->xpath('//apellidos') as $asunto) {
+            //echo $asunto."\n";
+            $usuario['apellidos'] = $asunto;
+        }
+        $i = 0;
+        foreach ($xml->xpath('//email') as $asunto) {
+            // echo $asunto."\n";
+            $usuario['email'] = $asunto;
+            $i++;
+        }
+        $i = 0;
+        foreach ($xml->xpath('//nick') as $asunto) {
+            // echo $asunto."\n";
+            $usuario['nick'] = $asunto;
+            $i++;
+        }
+
+        foreach ($xml->xpath('//pais') as $asunto) {
+            // echo $asunto."\n";
+            $usuario['pais'] = $asunto;
+        }
+
+        foreach ($xml->xpath('//biografia') as $asunto) {
+            // echo $asunto."\n";
+            $usuario['biografia'] = $asunto;
+        }
+
+        foreach ($xml->xpath('//sexo') as $asunto) {
+            // echo $asunto."\n";
+            $usuario['sexo'] = $asunto;
+        }
+
+        foreach ($xml->xpath('//fecha') as $asunto) {
+            // echo $asunto."\n";
+            $usuario['fecha'] = $asunto;
+        }
+
+        foreach ($xml->xpath('//clave') as $asunto) {
+            // echo $asunto."\n";
+            $usuario['clave'] = $asunto;
+        }
+        
+        foreach ($xml->xpath('//token') as $asunto) {
+           
+            $usuario['token'] = $asunto;
+        }
+        
+        return $usuario;
+    }
+
+    function XMLtoUsuario($result) {
+       
+        $xml = simplexml_load_string($result);
+    
         if ($xml === false) {
             die('Error parsing XML');
         }
@@ -101,7 +186,6 @@ class Usuario {
             // echo $asunto."\n";
             $usuario['token'] = $asunto;
         }
-
         return $usuario;
     }
 
@@ -135,14 +219,6 @@ class Usuario {
             die('Error parsing XML');
         }
 
-        
-        $i = 0;
-       foreach ($xml->xpath('//SimpleXMLElement ') as $asunto) {
-           
-            foreach ($asunto->xpath('//SimpleXMLElement ') as $objeto) {
-                
-            }
-        }
 
         $i = 0;
         foreach ($xml->xpath('//id__u') as $asunto) {
@@ -208,6 +284,13 @@ class Usuario {
             $usuario[$i]['fecha'] = $asunto;
             $i++;
         }
+        
+         $i = 0;
+        foreach ($xml->xpath('//token') as $asunto) {
+            // echo $asunto."\n";
+            $usuario[$i]['token'] = $asunto;
+            $i++;
+        }
         return $usuario;
     }
 
@@ -234,7 +317,7 @@ class Usuario {
         }
         curl_close($curl);
         if (strpos($result, "Error: ")) {
-            return $result;
+            return $this->XMLtoMensaje($result);
         } else {
             return $this->XMLtoListaDeUsuario($result);
         }
@@ -265,6 +348,8 @@ class Usuario {
    	<clave>" . $clave . "</clave>
 </usuario>
 ";
+        
+        
 
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/usuario/insertar');
@@ -274,18 +359,18 @@ class Usuario {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $prexml);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));
         $result = curl_exec($curl);
-        // echo $result;
+      
         if ($result === false) {
             die('Error fetching data: ' . curl_error($curl));
         }
         curl_close($curl);
 
 
-        if (strpos($result, "Error: ")) {
-           
-            return $result;
+        if (strpos($result,"Error: ")) {
+        
+            return $this->XMLtoMensaje($result);
         } else {
-
+           
             return $result = $this->XMLtoUsuario($result);
         }
     }
@@ -311,11 +396,9 @@ class Usuario {
             die('Error fetching data: ' . curl_error($curl));
         }
 
-        if (strpos($result, "Error: ")) {
-            return $result;
-        } else {
-            return $result;
-        }
+  
+            return $this->XMLtoMensaje($result);
+        
     }
 
     /* Modificar Usuario
@@ -337,10 +420,11 @@ class Usuario {
 	<clave>" . $pass . "</clave>
 </usuario>
 ";
+        
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/usuario/validar');
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-        // curl_setopt($curl,CURLOPT_HTTPGET,78447730);
+    
         curl_setopt($curl, CURLOPT_POSTFIELDS, $prexml);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));
         $result = curl_exec($curl);
@@ -353,8 +437,8 @@ class Usuario {
         if (strpos($result, "Error: ")) {
             return $this->XMLtoMensaje($result);
         } else {
-
-            return $this->XMLtoUsuario($result);
+           
+            return $this->XMLtoUsuarioToken($result);
         }
     }
 
@@ -375,12 +459,163 @@ class Usuario {
         curl_close($curl);
 
         if (strpos($result, "Error: ")) {
-            return $result;
+            return $this->XMLtoMensaje($result);
         } else {
 
             return $this->XMLtoUsuario($result);
         }
     }
+
+    public function nickdelid($nick) {
+    
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/usuario/datos/' . $nick);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        $result = curl_exec($curl);
+        // echo $result;
+        if ($result === false) {
+            die('Error fetching data: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+        if (strpos($result, "Error: ")) {
+            return $this->XMLtoMensaje($result);
+        } else {
+            echo $result;
+            return $result;
+        }
+    }
+
+         
+    
+    function ModificarUsuario($id_u, $nombre, $nombres, $apellido, $apellidos, $email, $nick, $pais, $biografia, $sexo, $fecha, $foto, $clave, $token) {
+        $prexml = " <usuario>
+        <id_u>" . $id_u . "</id_u>
+ 	<nombre>" . $nombre . "</nombre>
+   	<nombres>" . $nombres . "</nombres>
+   	<apellido>" . $apellido . "</apellido>
+   	<apellidos>" . $apellidos . "</apellidos>
+   	<email>" . $email . "</email>
+   	<nick>" . $nick . "</nick>
+   	<pais>" . $pais . "</pais>
+   	<biografia>" . $biografia . "</biografia>
+   	<sexo>" . $sexo . "</sexo>
+   	<fecha>" . $fecha . "</fecha>
+   	<foto>" . $foto . "</foto>
+   	<clave>" . $clave . "</clave>
+</usuario>
+";
+        //ahora debo validar al usuario
+        
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/usuario/modificar/' . $token);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $prexml);//si voy a mandar xml
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));//va cuando mandas xml pa q le de un formato
+        $result = curl_exec($curl);
+        echo $result;
+        if ($result === false) {
+            die('Error fetching data: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+
+        if (strpos($result, "Error: ")) {
+           
+            return $this->XMLtoMensaje($result);
+        } else {
+
+            return $result = $this->XMLtoUsuario($result);
+        }
+    }
+
+    
+    
+    
+    
+     function InsertarFoto($id_u, $ruta, $token) {
+        $prexml = " <usuario>
+        <id_u>" . $id_u . "</id_u>
+ 	<ruta>" . $ruta . "</ruta>
+</usuario>
+";
+        //ahora debo validar al usuario
+        
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/usuario/foto/' . $token);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $prexml);//si voy a mandar xml
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));//va cuando mandas xml pa q le de un formato
+        $result = curl_exec($curl);
+        //echo $result;
+        if ($result === false) {
+            die('Error fetching data: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+
+       
+            return $result = $this->XMLtoMensaje($result);
+        
+    }
+    
+    
+    function obtenerFoto($nick) {
+        
+        //ahora debo validar al usuario
+        
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/usuario/obtenerFoto/' . $nick);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        //curl_setopt($curl, CURLOPT_POSTFIELDS, $prexml);//si voy a mandar xml
+        //curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));//va cuando mandas xml pa q le de un formato
+        $result = curl_exec($curl);
+        //echo $result;
+        if ($result === false) {
+            die('Error fetching data: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+
+       
+            return $result = $this->XMLtoMensaje($result);
+        
+    }
+    
+    function obtenerNick($id_u) {
+        
+        //ahora debo validar al usuario
+        
+
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/usuario/datos/' . $id_u);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        //curl_setopt($curl, CURLOPT_POSTFIELDS, $prexml);//si voy a mandar xml
+        //curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));//va cuando mandas xml pa q le de un formato
+        $result = curl_exec($curl);
+        //echo $result;
+        if ($result === false) {
+            die('Error fetching data: ' . curl_error($curl));
+        }
+        curl_close($curl);
+
+
+       
+            return $result = $this->XMLtoMensaje($result);
+        
+    }  
+        
+        
+        
+        
+    
 
 }
 ?>

@@ -7,15 +7,45 @@ class Comentario {
     function Comentario() {
         
     }
+    
+    function XMLtoMensaje_C($result) {
 
+        $xml = simplexml_load_string($result);
+        if ($xml === false) {
+            die('Error parsing XML');
+        }
+
+        foreach ($xml->xpath('//mensaje') as $asunto) {
+            $comentario['id_c'] = $asunto;
+           
+        }
+        return $comentario;
+    }
+
+    function XMLtoMensaje_T($result) {
+
+        $xml = simplexml_load_string($result);
+        if ($xml === false) {
+            die('Error parsing XML');
+        }
+        
+        
+        print_r($xml);
+        foreach ($xml->xpath('//mensaje') as $asunto) {
+            $comentario['id_t'] = $asunto;
+           
+        }
+        return $comentario;
+    }
+    
     function XMLtoListaDeComentarios($result) {
-
+$comentario=null;
         $xml = simplexml_load_string($result);
 
         if ($xml === false) {
             die('Error parsing XML');
         }
-
+     
         $i = 0;
         foreach ($xml->xpath('//id__c') as $asunto) {
             $comentario[$i]['id_c'] = $asunto;
@@ -109,18 +139,40 @@ class Comentario {
 //insertar Comentario
 //POST /blog/comentario/insertar/:token  controllers.Comentario.insertarComentario(token)
     function InsertarComentario($texto, $priva, $id_u, $padre, $tags, $token) {
+echo $texto."////";
+echo $id_u."////";
+echo $priva."////";
+echo $padre."////";
+echo $tags."////";
+echo $token."////";
+echo $ta = $tags[0];
 
 
         $i = 1;
-        $prexml = "<comentario><texto>" . $texto . "</texto><privacidad>" . $priva . "</privacidad>
-	<id_u>" . $id_u . "</id_u><padre>" . $padre . "</padre><tag>";
+      /*  $prexml = "<comentario>
+            <texto>" . $texto . "</texto>
+            <privacidad>" . $priva . "</privacidad>
+            <id_u>" . $id_u . "</id_u>
+            <padre>" . $padre . "</padre>
+            <tag>";
 
         foreach ($tags as $value) {
             $prexml = $prexml . "<tag" . $i . ">" . $value . "</tag" . $i . ">";
             $i++;
         }
         $prexml = $prexml . "</tag></comentario>";
-
+        print_r($prexml); "comcatenado final     ".$prexml; */
+        
+        $prexml = "<comentario>
+	<texto>".$texto."</texto>
+	<privacidad>". $priva."</privacidad>
+	<id_u>".$id_u."</id_u>
+	<padre>".$padre."</padre>
+	<tags>
+		<tag1>".$ta."</tag1>
+	</tags>	
+</comentario>
+";
         $curl = curl_init();
         curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/comentario/insertar/' . $token);
 
@@ -128,7 +180,7 @@ class Comentario {
         curl_setopt($curl, CURLOPT_POSTFIELDS, $prexml);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));
         $result = curl_exec($curl);
-
+        echo $result;
         if ($result === false) {
             die('Error fetching data: ' . curl_error($curl));
         } else {
@@ -136,9 +188,9 @@ class Comentario {
             curl_close($curl);
 
             if (strpos($result, "Error: ")) {
-                return $result;
+                return $this->XMLtoMensaje_C($result);
             } else {
-                return $result = $this->XMLtoContruirComentario($result);
+                return $result = $this->XMLtoListaDeComentarios($result);
             }
         }
     }
@@ -158,7 +210,7 @@ class Comentario {
         curl_close($curl);
 
         if (strpos($result, "Error: ")) {
-            return $result;
+            return $this->XMLtoMensaje_C($result);
         } else {
             return $result = $this->XMLtoListaDeComentarios($result);
         }
@@ -166,7 +218,7 @@ class Comentario {
 
 //REVISAR
 //listar Comentarios especificos Cambiar token por id solo en las rutas
-//GET /blog/comentario/listar/:token  controllers.Comentario.listarcomentarios(token)
+//GET /blog/comentario/listar/:id_c  controllers.Comentario.listarcomentarios(token)
     function ListarComentarioEspe($id_c) {
 
 
@@ -180,10 +232,10 @@ class Comentario {
         }
         curl_close($curl);
         if (strpos($result, "Error: ")) {
-            return $result;
+            return $this->XMLtoMensaje_C($result);
         } else {
 
-            return $result = $this->XMLtoContruirComentario($result);
+            return $result = $this->XMLtoListaDeComentarios($result);
         }
     }
 
@@ -213,13 +265,7 @@ class Comentario {
             die('Error fetching data: ' . curl_error($curl));
         }
         curl_close($curl);
-
-        if (strpos($result, "Error: ")) {
-            return $result;
-        } else {
-
-            return $result;
-        }
+        return $result = $this->XMLtoMensaje_C($result);
     }
 
 //REVISAR
@@ -247,13 +293,9 @@ class Comentario {
             die('Error fetching data: ' . curl_error($curl));
         }
         curl_close($curl);
-        if (strpos($result, "Error: ")) {
-            return $result;
-        } else {
-
-
-            return $result;
-        }
+        
+        return $result = $this->XMLtoMensaje_C($result);
+       
     }
 
 //listar Comentario por Usuario
@@ -271,7 +313,7 @@ class Comentario {
         }
 
         if (strpos($result, "Error: ")) {
-            return $result;
+            return $result = $this->XMLtoMensaje_C($result);
         } else {
 //print_r($xml);
 
@@ -298,12 +340,12 @@ class Comentario {
         curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));
         $result = curl_exec($curl);
 // echo $result;
-        if (strpos($result, "Error: ")) {
-            return $result;
-        } else {
-
-            return $result;
+        
+        
+        if ($result === false) {
+            die('Error fetching data: ' . curl_error($curl));
         }
+       return $result = $this->XMLtoMensaje_T($result);
     }
 
 //Listar Comentarios por Tags
@@ -321,19 +363,15 @@ class Comentario {
         }
 
         if (strpos($result, "Error: ")) {
-            return $result;
+            return $result = $this->XMLtoMensaje_T($result);
         } else {
-            return $result = $this->XMLtoContruirTags($result);
+            return $result = $this->XMLtoListaDeComentarios($result);
         }
     }
-
 //Insertar Comentario con Adjunto
 //POST	/blog/comentario/insertarAdjunto	controllers.Comentario.upload()
 //Listar tags de un comentario
 //GET	/blog/comentario/tags/:id_c			controllers.Comentario.tagDeUnComentario(id_c)
-
-
-
     function ListarTagComentario($id_c) {
 
 
@@ -347,7 +385,7 @@ class Comentario {
         }
 
         if (strpos($result, "Error: ")) {
-            return $result;
+            return $result = $this->XMLtoMensaje_T($result);;
         } else {
 
             return $result = $this->XMLtoListaDeComentarios($result);
@@ -367,17 +405,76 @@ class Comentario {
         }
 
         if (strpos($result, "Error: ")) {
-            return $result;
+            return $result = $this->XMLtoMensaje_T($result);
         } else {
 
             return $result = $this->XMLtoTags($result);
         }
     }
     
-    
-    
-    
+ function InsertarAdjunto($texto, $priva, $id_u, $padre, $tags, $token,$ruta) {
+echo $texto."////";
+echo $id_u."////";
+echo $priva."////";
+echo $padre."////";
+echo $tags."////";
+echo $token."////";
+echo $ta = $tags[0]."////";
+echo $ruta;
 
+
+        $i = 1;
+      /*  $prexml = "<comentario>
+            <texto>" . $texto . "</texto>
+            <privacidad>" . $priva . "</privacidad>
+            <id_u>" . $id_u . "</id_u>
+            <padre>" . $padre . "</padre>
+            <tag>";
+
+        foreach ($tags as $value) {
+            $prexml = $prexml . "<tag" . $i . ">" . $value . "</tag" . $i . ">";
+            $i++;
+        }
+        $prexml = $prexml . "</tag></comentario>";
+        print_r($prexml); "comcatenado final     ".$prexml; */
+        
+        $prexml = "<comentario>
+	<texto>".$texto."</texto>
+	<privacidad>". $priva."</privacidad>
+	<id_u>".$id_u."</id_u>
+	<padre>".$padre."</padre>
+	<tags>
+		<tag1>".$ta."</tag1>
+	</tags>	
+        <ruta>".$ruta."</ruta>
+</comentario>
+";
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_URL, 'http://localhost:9000/blog/comentario/insertarAdjunto/' . $token);
+
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $prexml);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: text/xml', 'Content-Length: ' . strlen($prexml)));
+        $result = curl_exec($curl);
+        echo $result;
+        if ($result === false) {
+            die('Error fetching data: ' . curl_error($curl));
+        } else {
+
+            curl_close($curl);
+
+            if (strpos($result, "Error: ")) {
+                return $this->XMLtoMensaje_C($result);
+            } else {
+                return $result = $this->XMLtoListaDeComentarios($result);
+            }
+        }
+    }
+
+    
+    
+    
+    
     
     
     

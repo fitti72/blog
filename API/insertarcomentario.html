@@ -1,0 +1,100 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>API</title>
+ <link href="public/css/faary.css" rel="stylesheet" type="text/css" media="all" />
+        <link href="public/css/styles.css" rel="stylesheet" type="text/css" media="all" />
+</head>
+
+<body>
+
+
+ <div id="head">
+            <div id="head_cen">
+                <div id="head_sup" class="head_pad">
+                   
+
+                    <h1 class="logo"><a href="index.html">BLOG</a></h1>
+                </div>
+            </div>
+        </div>
+<div  id="content">
+
+<div><h1>POST comentario/insertar/:token</h1>
+</div>
+
+
+<div>
+<h2>Direccion URL</h2>
+<p >http://localhost:9000/blog/comentario/insertar/:token</p>
+<h2>Descripcion</h2>
+<p>Retorna el comentario ya insertado en persistencia con su id, en formato XML, se pasa como parametro el token del usuario que esta haciendo el comentario y un XML con el texto del comentario, la privacidad del comentario, el id del usuario creador el comentario, el padre, es decir, si esta respondiendo a un comentario ya realizado antes o un nuevo comentario y se le puede pasar de una vez los tags al comentario si es padre si no, no se le pasa tags. </p>
+<h2>Parametro</h2>
+<p>Token del Usuario</p>
+
+
+<h2>Entradas XML</h2>
+<p>Cuando es un comentario padre este es el formato de XML</p>
+<p>&lt;comentario&gt;<br />
+&lt;texto&gt;mi segundo comentario&lt;/texto&gt;<br />
+&lt;privacidad&gt;1&lt;/privacidad&gt;<br />
+&lt;id_u&gt;2&lt;/id_u&gt;<br />
+&lt;padre&gt;0&lt;/padre&gt;<br />
+&lt;tag&gt;<br />
+&lt;tag1&gt;segundoTAG&lt;/tag1&gt;<br />
+&lt;tag2&gt;quintoTAG&lt;/tag2&gt;<br />
+&lt;tag3&gt;nuevoTag&lt;/tag3&gt;<br />
+&lt;/tag&gt;<br />
+&lt;/comentario&gt;</p>
+<p>Comentario Hijo</p>
+<p>&lt;comentario&gt;<br />
+&lt;texto&gt;mi segundo comentario&lt;/texto&gt;<br />
+&lt;privacidad&gt;1&lt;/privacidad&gt;<br />
+&lt;id_u&gt;2&lt;/id_u&gt;<br />
+&lt;padre&gt;0&lt;/padre&gt;<br />
+&lt;/comentario&gt;</p>
+
+<h2>Salidas XML</h2>
+<p>&lt;models.OD.ComentarioOD&gt;<br />
+&lt;id__c&gt;2&lt;/id__c&gt;<br />
+&lt;texto&gt;mi segundo comentario&lt;/texto&gt;<br />
+&lt;fecha&gt;Thu May 31 19:55:52 VET 2012&lt;/fecha&gt;<br />
+&lt;privacidad&gt;1&lt;/privacidad&gt;<br />
+&lt;id__u&gt;2&lt;/id__u&gt;<br />
+&lt;padre&gt;0&lt;/padre&gt;<br />
+&lt;gusta&gt;0&lt;/gusta&gt;<br />
+&lt;nogusta&gt;0&lt;/nogusta&gt;<br />
+&lt;/models.OD.ComentarioOD&gt;</p>
+
+
+<h2>Errores</h2>
+<p>&lt;mensaje&gt;Error: No puedes colocar comentario vacio &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: Falta la privacidad del comentario &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: Falta el id del usuario que crea el comentario &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: Falta el id del comentario padre de este comentario &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: El token del usuario excede el numero de digitos permitidos &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: El id del usuario debe ser un numero &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: El id del padre debe ser un numero &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: la privacidad debe ser un numero &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: la privacidad debe ser un numero de un solo digito &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: la privacidad solo puede ser 0 o 1 &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: Ese token no pertenece a ese usuario bro &lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: error insertando comentario: Token invalido&lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error:: el comentario es hijo y no puede llevar tags asociados&lt;/mensaje&gt;<br />
+&lt;mensaje&gt;Error: error insertando comentario, Token invalido o comentario padre privado&lt;/mensaje&gt;</p>
+<p><br />
+</p>
+</div>
+
+
+
+
+</div>
+
+
+
+
+
+</body>
+</html>

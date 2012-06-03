@@ -71,6 +71,9 @@ public class GestorUsuario {
 		UsuarioOD result = usuario.buscar(Usuario);
 		if (result != null)
 		{
+			TokenDAO token= new TokenMongoDB();
+			TokenOD t =token.buscarPorUsuario(result);
+			result.setToken(t.getToken());
 			return result;
 		}
 		else

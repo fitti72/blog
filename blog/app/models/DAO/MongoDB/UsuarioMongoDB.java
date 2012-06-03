@@ -71,6 +71,7 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
             usuario.put("biografia", Usuario.getBiografia());
             usuario.put("sexo", Usuario.getSexo());
             usuario.put("clave", Usuario.getClave());
+            usuario.put("token",0);
             coleccionUsuario.insert(usuario);
             
         }
@@ -117,6 +118,7 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
         usuario.setBiografia(obj.get("biografia").toString());
         usuario.setSexo(obj.get("sexo").toString());
         usuario.setClave(obj.get("clave").toString());
+        usuario.setToken((Integer.parseInt(obj.get("token").toString())));
         
         
         return usuario;
