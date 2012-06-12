@@ -118,7 +118,7 @@ public class UsuarioMongoDB implements models.DAO.UsuarioDAO{
         usuario.setBiografia(obj.get("biografia").toString());
         usuario.setSexo(obj.get("sexo").toString());
         usuario.setClave(obj.get("clave").toString());
-        usuario.setToken((Integer.parseInt(obj.get("token").toString())));
+        //usuario.setToken((Integer.parseInt(obj.get("token").toString())));
         
         
         return usuario;

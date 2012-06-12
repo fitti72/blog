@@ -32,20 +32,20 @@ public class UsuarioTest {
 	 * La funcion insertar corre la funcion validarNick. Si el nick es nuevo, lo inserta y la prueba verifica que 
 	 * si este insertado con la funcion usuarioespecifico. Si el nick ya esta en el sistema, la prueba fallara
 	 */
-/*
+
 	@Test 
 	public void validarInsertarTest() {
-		UsuarioOD beta = new UsuarioOD("Renato", "Gianfranco", "Ferrante", "Ghersi", "fitipaldi_6272@hotmail.com", "fitiPrueba", "Venezuela", "mr pruebas unitarias2", "M", "21/06/1990", "1234");
+		UsuarioOD beta = new UsuarioOD("Renato", "Gianfranco", "Ferrante", "Ghersi", "fitipaldi_6272@hotmail.com", "fitiPrueba3", "Venezuela", "mr pruebas unitarias2", "M", "21/06/1990", "1234");
 		System.out.println("A1111111111111111111111111111: "+beta.getNick());
 		Boolean test = gestorUsuario.insertar(beta);
 		Assert.assertEquals(true, test.booleanValue());
 		//ahora debo verificar que si esta en persistencia
 		UsuarioOD alfa = gestorUsuario.usuarioespecifico(beta);
 		Assert.assertEquals("Renato", alfa.getNombre());
-		//boolean eliminar = gestorUsuario.eliminar(beta);		
+		boolean eliminar = gestorUsuario.eliminar(beta);		
 	}
 
-*/	
+	
 
 	
 	
@@ -55,32 +55,37 @@ public class UsuarioTest {
 	 * como el usuario ya tienen un token asignado, si el token no esta vencido, entonces la prueba fallara. 
 	 * En esta prueba se estan verificando varias funciones del GestorUsuario como: validarNick, validarPass y validarToken
 	 */
-/*
+
 	@Test
 	public void validarTokenUsuarioTest() {
 		UsuarioOD Test2 = new UsuarioOD();
-		Test2.setNick("fitiPrueba");	
+		Test2.setNick("juan");	
 		Test2.setClave("1234");
 		UsuarioOD test = gestorUsuario.Login(Test2, "localhost");
-		Assert.assertEquals("Renato", test.getNombre());	//sabemos que el nick fiti pertenece al usuario de nombre Renato
+		
+		Assert.assertEquals("Juan", test.getNombre());	//sabemos que el nick juan pertenece al usuario de nombre Juan
+		TokenDAO beta = new TokenMongoDB();
+		TokenOD alfa = new TokenOD();
+		alfa.setToken(test.getToken());
+		//beta.eliminar(alfa);
 	}
-*/
+
 	
 	
 	/**
 	 * Prueba que consiste en buscar los datos del usuario creado en el primer test, buscar su token, y modificar sus datos
 	 */
-/*
+
 	@Test
 	public void validarModificarUsuarioTest(){	
 		System.out.println("ENTROOOOOO");		
 		UsuarioOD beta = new UsuarioOD();
-		beta.setNick("fitiPrueba");
+		beta.setNick("juan");
 		beta.setClave("1234");
 		
 		UsuarioOD buscado = gestorUsuario.usuarioespecifico(beta);
 		System.out.println("1AKI BUSKE Y ME TRAJE A: "+buscado.getNombre());	
-		Assert.assertEquals(buscado.getNombre(), "Renato");
+		Assert.assertEquals(buscado.getNombre(), "Juan");
 		
 		
 		//necesito el token, lo busco
@@ -95,15 +100,20 @@ public class UsuarioTest {
 		Boolean alfa = gestorUsuario.modificar(usuario);
 		System.out.println("ESTA devuelve: "+alfa.booleanValue());
 		Assert.assertEquals(true,alfa.booleanValue());		
-		//Assert.assertEquals(5,5);
+		
+		TokenDAO comando = new TokenMongoDB();
+		TokenOD alfados = new TokenOD();
+		alfados.setToken(quetal.getToken());
+		
+		comando.eliminar(alfados);
 		
 	}
-*/	
+	
 	
 	/**
 	 * Prueba que se encarga de eliminar el usuario que insertamos en la prueba 1, que validamos en la prueba 2 y que modificamos en la prueba 3
 	 */
-/*
+
 	@Test
 	public void validarEliminarUsuarioTest(){
 		UsuarioOD beta = new UsuarioOD();
@@ -114,11 +124,21 @@ public class UsuarioTest {
 		System.out.println("2AKI BUSKE Y ME TRAJE A: "+buscadoEspecial.getNombre());	
 		Boolean eliminado = gestorUsuario.eliminar(buscadoEspecial);
 		Assert.assertTrue(true);
+		TokenDAO comando = new TokenMongoDB();
+		TokenOD alfa = new TokenOD();
+		alfa.setToken(buscadoEspecial.getToken());
+		comando.eliminar(alfa);
+		
+		UsuarioOD jon = new UsuarioOD("Juan", "Gianfranco", "Ferrante", "Ghersi", "fitipaldi_6272@hotmail.com", "juan", "Venezuela", "mr pruebas unitarias2", "M", "21/06/1990", "1234");
+		
+		Boolean test = gestorUsuario.insertar(jon);
+		
+		
 		
 	}
 	
 
-*/
+
 	
 
 }
